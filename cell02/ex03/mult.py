@@ -1,14 +1,8 @@
-x = int(input("Enter the first number: "))
-y = int(input("Enter the second number: "))
+x = int(input("Enter a number less than 25"))
 
-result = x * y
-print(f"{x} x {y} = {result}")
-
-if result < 0:
-    print("The result is negative.")
-elif result == 0:
-    print("The result is positive and negative.")
+if x > 25 :
+    print("Error")
 else:
-    print("The result is positive.")
-
-
+    while x <= 25 and x >= 0:
+        print("Inside the loop, my variable is " + str(x))
+        x += 1
