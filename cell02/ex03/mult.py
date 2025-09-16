@@ -1,21 +1,14 @@
-ef main():
-    try:
-        num1 = float(input("Enter the first number: "))
-        num2 = float(input("Enter the second number: "))
-        result = num1 * num2
+x = int(input("Enter the first number: "))
+y = int(input("Enter the second number: "))
 
-        print(f"{num1} x {num2} = {result}")
+result = x * y
+print(f"{x} x {y} = {result}")
 
-        if result > 0:
-            print("The result is positive.")
-        elif result < 0:
-            print("The result is negative.")
-        else:
-            print("The result is positive and negative.")
-    except ValueError:
-        print("Invalid input. Please enter valid numbers.")
-
-if __name__ == "__main__":
-    main()
+if result < 0:
+    print("The result is negative.")
+elif result == 0:
+    print("The result is positive and negative.")
+else:
+    print("The result is positive.")
 
 
