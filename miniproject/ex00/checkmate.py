@@ -1,66 +1,29 @@
 def checkmate(board_str):
     try:
-        board = [list(row) for row in board_str.strip().split("\n")]
-        n = len(board)
-
-        # ตรวจสอบว่าเป็นบอร์ดสี่เหลี่ยมจัตุรัส
-        if any(len(row) != n for row in board):
-            print("Invalid board")
-            return
-
-        # หาตำแหน่งของ King
-        king_positions = [(i, j) for i in range(n) for j in range(n) if board[i][j] == 'K']
-        if len(king_positions) != 1:
-            print("Invalid board: Must contain exactly one King")
-            return
-
-        ki, kj = king_positions[0]
-
-        def in_bounds(x, y):
-            return 0 <= x < n and 0 <= y < n
-
-        # ตรวจสอบการโจมตีจาก Pawn (เดินขึ้น)
-        for dx, dy in [(-1, -1), (-1, 1)]:
-            x, y = ki + dx, kj + dy
-            if in_bounds(x, y) and board[x][y] == 'P':
-                print("Success")
-                return
-
-        # ตรวจสอบการโจมตีจาก Rook และ Queen (แนวตรง)
-        for dx, dy in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
-            x, y = ki + dx, kj + dy
-            while in_bounds(x, y):
-                if board[x][y] != '.':
-                    if board[x][y] in ('R', 'Q'):
-                        print("Success")
-                        return
+        b = board_str.strip().split("\n")
+        n = len(b)
+        if any(len(r) != n for r in b):
+            print("Invalid board"); return
+        k = [(i,j) for i in range(n) for j in range(n) if b[i][j]=='K']
+        if len(k)!=1:
+            print("Invalid board: Must contain exactly one King"); return
+        x,y = k[0]
+        atk = [(-1,-1),(-1,1)];   # Pawn
+        atk += [(-2,-1),(-2,1),(-1,-2),(-1,2),(1,-2),(1,2),(2,-1),(2,1)]  # Knight
+        for dx,dy in atk:
+            i,j = x+dx, y+dy
+            if 0<=i<n and 0<=j<n:
+                if (b[i][j]=='P' and dx==-1) or b[i][j]=='N':
+                    print("Success"); return
+        for dx,dy,d in [(-1,0,'RQ'),(1,0,'RQ'),(0,-1,'RQ'),(0,1,'RQ'),
+                        (-1,-1,'BQ'),(-1,1,'BQ'),(1,-1,'BQ'),(1,1,'BQ')]:
+            i,j = x+dx,y+dy
+            while 0<=i<n and 0<=j<n:
+                p = b[i][j]
+                if p != '.':
+                    if p in d:
+                        print("Success"); return
                     break
-                x += dx
-                y += dy
-
-        # ตรวจสอบการโจมตีจาก Bishop และ Queen (แนวทแยง)
-        for dx, dy in [(-1, -1), (-1, 1), (1, -1), (1, 1)]:
-            x, y = ki + dx, kj + dy
-            while in_bounds(x, y):
-                if board[x][y] != '.':
-                    if board[x][y] in ('B', 'Q'):
-                        print("Success")
-                        return
-                    break
-                x += dx
-                y += dy
-
-        # ตรวจสอบการโจมตีจาก Knight
-        for dx, dy in [(-2, -1), (-2, 1), (-1, -2), (-1, 2),
-                       (1, -2), (1, 2), (2, -1), (2, 1)]:
-            x, y = ki + dx, kj + dy
-            if in_bounds(x, y) and board[x][y] == 'N':
-                print("Success")
-                return
-
-        # ถ้าไม่มีตัวใดสามารถโจมตี King ได้
+                i+=dx; j+=dy
         print("Fail")
-
-    except Exception:
-        # ไม่พิมพ์อะไรเลยในกรณี error ตามข้อกำหนด
-        pass
+    except: pass
